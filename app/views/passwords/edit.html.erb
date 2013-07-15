@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="row">
+    <div class="offset4 span4 well">
+      <%= form_for @user, :url => password_path(:token => params[:token]) do |f| %>
+        <h4> Reset Password </h4>
+        <% if @user.errors.any? %>
+            <h2>Form is invalid</h2>
+            <ul>
+              <% for message in @user.errors.full_messages %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+        <% end %>  
+          <p>
+            <%= f.label :password %>
+            <%= f.password_field :password %>
+          </p>
+          <p>
+            <%= f.label :password_confirmation %>
+            <%= f.password_field :password_confirmation %>
+          </p>
+          <p><%= f.submit "Update Password" %><p>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -20,12 +20,51 @@
           <div class ="pull-right">
             <ul class="nav nav-pills pull-right">
               <% if logged_in? %> 
-                <li class="<%='active' if current_page?(logout_path) %>">
-                  <%= link_to "Logout (#{current_user.user_name})", logout_path, :method => :delete %></span>
-                </li>
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account
+                  <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                          <li><%= link_to '<i class="icon-star"></i> My Profile'.html_safe, current_user%> </li>
+                          <li><a href="<%= edit_user_path(current_user) %>">
+                            <i class="icon-edit"></i> Edit Profile</a></li>
+                          <li><%= link_to '<i class="icon-remove"></i> Delete Profile'.html_safe, 
+                            current_user, :method => :delete, :confirm => "Are you sure you want to do this?"%>
+                            </li>
+                            <li class="divider"></li>
+                            <li><label style="text-align:center;margin-top:5px">
+                              <%= link_to("Logout", logout_path,:method => :delete,:class => "btn btn-primary")%>
+                            </label>
+                            </li>
+                        </ul>
+                    </li>
               <% else %>
-                <li class="<%='active' if current_page?(login_path) || current_page?(new_user_path) %>">
-                  <%= link_to 'Login/Register', login_path %>
+                <li class="divider-vertical"></li>
+                  <li class="dropdown">
+                  <a class="dropdown-toggle" href="/login" data-toggle="dropdown">Login/Register 
+                    <strong class="caret"></strong></a>
+                  <ul class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
+                    <li>
+                      <%= form_for(:login, :url => login_path) do |f| %>
+                        <h4> Login </h4>
+                        <p>
+                          <%= f.label "Username" %>
+                          <%= f.text_field :user_name %>
+                        </p>
+                        <p>
+                          <%= f.label :password %>
+                          <%= f.password_field :password %>
+                        </p>  
+                        <p>
+                        <label style="text-align:center;margin-top:5px">
+                          <%= f.submit("Login", :class => "btn btn-primary") %>
+                        </label>  
+                        </p>
+                        <p><label style="text-align:center;margin-top:5px">
+                          <%= link_to "Forgot password?", new_password_path %></label></p>
+                        <li class="divider"> </li>
+                        <label style="text-align:center;margin-top:5px">or</label>
+                        <label style="text-align:center;margin-top:5px"><%= link_to("Register", new_user_path, :class => "btn btn-primary") %></label></li>
+                    <% end %>
+                  </ul>
                 </li>
               <% end %>
             </ul>
@@ -34,7 +73,6 @@
       </div>
     </div>
   </div>
-
   <br>
   <br>
   <br>

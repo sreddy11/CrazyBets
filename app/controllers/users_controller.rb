@@ -18,6 +18,29 @@ class UsersController < ApplicationController
     end
   end
 
+  def edit
+    @user = User.find_by_user_name!(params[:id])
+  end
+
+  def update
+    @user = User.find_by_user_name!(params[:id])
+    if @user.update(user_params)
+      redirect_to @user, :notice => "Your Account (#{@user.user_name}) has been successfully updated"
+      session[:user_id] = @user.id
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    if current_user.destroy
+      session[:user_id] = nil
+      redirect_to root_url, :notice => "Your account has been deleted."
+    else
+      redirect_to current_user, :notice => "Sorry, the account could not be deleted"
+    end
+  end
+
   private
     
   def user_params

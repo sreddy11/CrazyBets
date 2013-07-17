@@ -7,6 +7,7 @@ FactoryGirl.define do
     password 'password'
     password_confirmation 'password'
     sequence(:email) {|n| "#{n}@yahoo.com"}
+    admin false
     
   end
 end

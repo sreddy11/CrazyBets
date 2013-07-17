@@ -1,7 +1,11 @@
 class UsersController < ApplicationController
 
+  before_filter :find_user, :only => [:show, :edit, :update]
+  before_filter :require_authentication, :only => [:edit, :update, :destroy]
+  before_filter :changing_current_user, :only => [:edit, :update, :destroy]
+  before_filter :require_no_authentication, :only => [:create]
+  
   def show
-    @user = User.find_by_user_name!(params[:id])
   end
 
   def new
@@ -19,11 +23,9 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find_by_user_name!(params[:id])
   end
 
   def update
-    @user = User.find_by_user_name!(params[:id])
     if @user.update(user_params)
       redirect_to @user, :notice => "Your Account (#{@user.user_name}) has been successfully updated"
       session[:user_id] = @user.id
@@ -42,10 +44,21 @@ class UsersController < ApplicationController
   end
 
   private
-    
+
+  def find_user
+    @user = User.find_by_user_name!(params[:id])
+  end
+
   def user_params
     params.require(:user).permit(:first_name, :last_name, :user_name, :email, :password, :password_confirmation, 
                                  :password_digest)
   end
+
+  def changing_current_user
+    if @user != current_user
+      redirect_to root_url, :notice => "Unauthorized access"
+    end
+  end
+
 
 end

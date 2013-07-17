@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
   def require_no_authentication
     if logged_in?
       flash[:error] = "Already logged in"
-      redirect_to(request.referer)
+      redirect_to(current_user)
     end 
   end
 end

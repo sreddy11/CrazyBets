@@ -20,7 +20,8 @@
           <div class ="pull-right">
             <ul class="nav nav-pills pull-right">
               <% if logged_in? %> 
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, 
+                  <%= current_user.first_name %>!
                   <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                           <li><%= link_to '<i class="icon-star"></i> My Profile'.html_safe, current_user%> </li>

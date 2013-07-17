@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe UserMailer do
   describe "reset_password" do
-    let(:mail) { UserMailer.reset_password }
+    let(:mail) { UserMailer.reset_password(FactoryGirl.create(:user)) }
 
     it "renders the headers" do
       mail.subject.should eq("Reset password")

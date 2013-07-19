@@ -26,7 +26,11 @@ CrazyBets::Application.routes.draw do
   #     end
   #   end
   resource :password, :only => [:new, :edit, :update, :create]
-
+  resources :admins do
+    collection do
+      resource :invitation
+    end
+  end
   resources :users
 
   get 'login' => "logins#new"

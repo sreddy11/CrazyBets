@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="row">
+    <div class="offset4 span4 well">
+      <h1> Register </h1>
+      <% if @invitation %>
+        <ul>
+         <% @invitation.errors.full_messages.each do |error| %>
+           <li><font color="red"><%= error %></font></li>
+         <% end %>
+        </ul>
+      <% end %>
+ 
+      <%= form_for @invitation, :url => invitation_path, :html => {:class => "form-horizontal"} do |f| %>
+        <p>
+          <%= f.label :recipient_email, "E-mail of Invitee" %>
+          <%= f.text_field :recipient_email %>
+        </p>
+        <%= f.submit("Invite this Person", :class => "btn btn-warning") %>
+      </p>
+    <% end %>
+  </div>
+</div>

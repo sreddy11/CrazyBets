@@ -18,9 +18,9 @@ class PasswordsController < ApplicationController
   end
 
   def update
-    if @user.update_attributes(params[:user])
+    if @user.update_attributes(password_params)
       @user.update_attribute(:reset_password_token, nil)
-      redirect_to articles_path, :notice => "Password has been reset!"
+      redirect_to root_url, :notice => "Password has been reset!"
     else
       flash.now[:alert] = "Password did not update. Please try again."
       render :edit       
@@ -41,4 +41,10 @@ class PasswordsController < ApplicationController
       redirect_to new_password_path, :alert => "Password reset request has expired."
     end  
   end
+
+  def password_params
+    params.require(:user).permit(:password, :password_confirmation)
+  end
+
 end
+

@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130715194817) do
+ActiveRecord::Schema.define(version: 20130718134109) do
+
+  create_table "invitations", force: true do |t|
+    t.integer  "sender_id"
+    t.string   "recipient_email"
+    t.string   "invite_token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "first_name",                             null: false
@@ -24,6 +32,7 @@ ActiveRecord::Schema.define(version: 20130715194817) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "admin",                  default: false, null: false
+    t.integer  "invitation_id"
   end
 
 end

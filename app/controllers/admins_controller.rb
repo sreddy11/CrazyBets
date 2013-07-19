@@ -22,14 +22,6 @@ class AdminsController < ApplicationController
     
   def create
     @admin_user = Admin.new(admin_params)
-    if @admin_user.save
-      redirect_to admin_path(@admin_user), :notice => "Admin Account (#{@admin_user.user_name}) has been 
-      successfully created"
-      session[:user_id] = @admin_user.id
-      session[:user_type] = "admin"
-    else
-      render :new
-    end
   end
 
   def update
@@ -53,11 +45,10 @@ class AdminsController < ApplicationController
     end
   end
 
-
   private
 
   def admin_params
-    @admin_params = params.require(:admin).permit(:first_name, :last_name, :user_name, :email, :password, 
+    @admin_params = params.require(:user).permit(:first_name, :last_name, :user_name, :email, :password, 
                                                  :password_confirmation, :invitation_id) 
 =======
 =======

@@ -52,4 +52,3 @@ class PasswordsController < ApplicationController
       @parameters.permit(:password, :password_confirmation)
   end
 end
-

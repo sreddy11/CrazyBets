@@ -9,7 +9,11 @@ class User < ActiveRecord::Base
   validates :password, :length => {:minimum => 6},:if => lambda {|a| a.password.present?}
   validates :email, :presence => :true, :uniqueness => :true, 
     :email_format => { message: "not a valid format" }
+  validates_presence_of :invitation_id, :if => :admin? 
+  validates_uniqueness_of :invitation_id, :if => :admin?
 
+  has_many :invitations, :class_name => 'Invitation', :foreign_key => 'sender_id'
+  belongs_to :invitation
   has_secure_password
   
   def send_password_reset
@@ -17,6 +21,10 @@ class User < ActiveRecord::Base
     self.reset_password_sent_at = Time.zone.now
     save!
     UserMailer.reset_password(self).deliver
+  end
+
+  def admin?
+    self.admin
   end
 
   def set_new_token

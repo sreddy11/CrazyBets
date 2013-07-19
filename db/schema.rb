@@ -44,7 +44,6 @@ ActiveRecord::Schema.define(version: 20130719204443) do
     t.datetime "reset_password_sent_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "invitation_id"
   end
 
 end

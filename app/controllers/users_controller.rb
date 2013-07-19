@@ -13,6 +13,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    @user.admin = false
     if @user.save
       redirect_to @user, :notice => "Your Account (#{@user.user_name}) has been successfully created"
       session[:user_id] = @user.id

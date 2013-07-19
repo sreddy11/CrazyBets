@@ -39,6 +39,4 @@ class InvitationsController < ApplicationController
   def invitation_params
     params.require(:invitation).permit(:recipient_email)
   end
-
-
 end

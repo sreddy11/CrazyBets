@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 class AdminsController < ApplicationController
 
   before_filter :check_invite, :only => [:new]
@@ -20,10 +21,26 @@ class AdminsController < ApplicationController
   
   def create
     @admin_user = Admin.new(admin_params)
+=======
+class AdminsController < UsersController
+
+  before_filter :check_invite, :only => [:new]
+  def new
+    @admin_user = User.new
+    @admin_user.invitation = @invitation
+    @admin_user.email = @invitation.recipient_email  
+  end
+  
+  def create
+    @admin_user = User.new(admin_params)
+    #@admin_user.invitation_id = 6
+    @admin_user.admin = true
+>>>>>>> added invites to admins
     if @admin_user.save
       redirect_to admin_path(@admin_user), :notice => "Admin Account (#{@admin_user.user_name}) has been 
       successfully created"
       session[:user_id] = @admin_user.id
+<<<<<<< HEAD
       session[:user_type] = "admin"
     else
       render :new
@@ -57,6 +74,19 @@ class AdminsController < ApplicationController
   def admin_params
     @admin_params = params.require(:admin).permit(:first_name, :last_name, :user_name, :email, :password, 
                                                  :password_confirmation, :invitation_id) 
+=======
+    else
+      redirect_to new_admin_url(:invite_token => @admin_user.invitation.invite_token)
+    end
+  end
+
+  private
+
+  def admin_params
+    @admin_params = params.require(:user).permit(:first_name, :last_name, :user_name, :email, :password, 
+                                                 :password_confirmation, :invitation_id) 
+    @admin_params
+>>>>>>> added invites to admins
   end
 
   def check_invite

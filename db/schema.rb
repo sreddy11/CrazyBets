@@ -11,6 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Fixed admin invite
+>>>>>>> Fixed admin invite
 ActiveRecord::Schema.define(version: 20130719204443) do
 
   create_table "admins", force: true do |t|
@@ -25,7 +32,10 @@ ActiveRecord::Schema.define(version: 20130719204443) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+<<<<<<< HEAD
 
+=======
+>>>>>>> Fixed admin invite
   create_table "invitations", force: true do |t|
     t.integer  "sender_id"
     t.string   "recipient_email"

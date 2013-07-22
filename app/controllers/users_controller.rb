@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
   before_filter :find_user, :only => [:show, :edit, :update, :destroy]
-  before_filter :require_authentication, :only => [:show, :edit, :update, :destroy]
+  before_filter :require_user_authentication, :only => [:show, :edit, :update, :destroy]
   before_filter :require_no_authentication, :only => [:new, :create]
   
   def show
@@ -13,7 +13,6 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    @user.admin = false
     if @user.save
       redirect_to @user, :notice => "Your Account (#{@user.user_name}) has been successfully created"
       session[:user_id] = @user.id
@@ -50,6 +49,14 @@ class UsersController < ApplicationController
   def find_user
     @user = User.find_by_user_name!(params[:id])
   end
+
+  def require_user_authenication
+    unless session[:user_id] = @user.id && session[:user] = "non-admin" 
+      flash[:error] = " Unauthorized access"
+      redirect_to(root_url)
+    end 
+  end
+
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :user_name, :email, :password, :password_confirmation, 

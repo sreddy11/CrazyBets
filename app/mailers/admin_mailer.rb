@@ -10,4 +10,5 @@ class AdminMailer < ActionMailer::Base
     @user = user
     mail :to => @user.email, :subject => "CrazyBets Admin: Reset Password"
   end
+
 end

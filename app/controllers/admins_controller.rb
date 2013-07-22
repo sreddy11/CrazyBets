@@ -2,7 +2,8 @@
 class AdminsController < ApplicationController
 
   before_filter :check_invite, :only => [:new]
-  before_filter :require_authentication, :only => [:show, :edit, :update, :destroy]
+  before_filter :find_admin, :only => [:show, :edit, :update, :destroy]
+  before_filter :require_admin_authentication, :only => [:show, :edit, :update, :destroy]
   before_filter :require_no_authentication, :only => [:new, :create]
 
   def new
@@ -15,7 +16,6 @@ class AdminsController < ApplicationController
   end
 
   def edit
-    @admin_user = Admin.find_by_user_name!(params[:id])
   end
 
   
@@ -25,10 +25,10 @@ class AdminsController < ApplicationController
   end
 
   def update
-    @admin_user = Admin.find_by_user_name!(params[:id])
     if @admin_user.update(admin_params)
       redirect_to @admin_user, :notice => "Your Account (#{@admin_user.user_name}) has been successfully updated"
       session[:user_id] = @admin_user.id
+      session[:user_type] = "admin"
     else
       render :edit
     end
@@ -36,19 +36,21 @@ class AdminsController < ApplicationController
 
 
   def destroy
-    if current_user.destroy
+    if @admin_user.destroy
       session[:user_id] = nil
       session[:user_type] = nil
       redirect_to root_url, :notice => "Your account has been deleted."
     else
       redirect_to current_user, :notice => "Sorry, the account could not be deleted"
+      render :new
     end
   end
+
 
   private
 
   def admin_params
-    @admin_params = params.require(:user).permit(:first_name, :last_name, :user_name, :email, :password, 
+    @admin_params = params.require(:admin).permit(:first_name, :last_name, :user_name, :email, :password, 
                                                  :password_confirmation, :invitation_id) 
 =======
 =======
@@ -92,6 +94,18 @@ class AdminsController < ApplicationController
 =======
 >>>>>>> Fixed admin invite
   end
+
+  def find_admin
+    @admin_user = Admin.find_by_user_name!(params[:id])
+  end
+
+  def require_admin_authenication
+    unless session[:user_id] = @admin_user.id && session[:user_type] = "admin" 
+      flash[:error] = " Unauthorized access"
+      redirect_to(root_url)
+    end 
+  end
+
 
   def check_invite
     @invitation = Invitation.find_by_invite_token(params[:invite_token])

@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="row">
+    <div class="offset4 span4 well">
+      <h4> Edit Profile </h4>
+      <% if @user %>
+        <ul>
+         <% @user.errors.full_messages.each do |error| %>
+           <li><font color="red"><%= error %></font></li>
+         <% end %>
+        </ul>
+      <% end %>
+ 
+    <%= form_for user, :html => {:class => "form-horizontal"} do |f| %>
+      <p>
+        <%= f.label :first_name, "First Name" %>
+        <%= f.text_field :first_name %>
+      </p>
+      <p>
+        <%= f.label :last_name, "Last Name" %>
+        <%= f.text_field :last_name %>
+      </p>
+      <p>
+        <%= f.label :user_name, "User Name" %>
+        <%= f.text_field :user_name %>
+      </p>
+      <p>
+        <%= f.label :email, "E-mail" %>
+        <%= f.text_field :email %>
+      </p>
+      <p>
+        <%= f.submit("Save Changes", :class => "btn btn-success") %>
+        <%= link_to("Cancel", current_user, :class => "btn btn-danger") %>
+      </p>
+    <% end %>
+  </div>
+</div>

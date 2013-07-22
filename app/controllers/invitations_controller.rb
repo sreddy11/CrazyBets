@@ -19,8 +19,9 @@ class InvitationsController < ApplicationController
   private
 
   def check_admin_status
-    unless current_user.admin?
-      redirect_to root_url, :error => "Unauthorized Access"
+    unless session[:user_type] == "admin"
+      flash[:error] = " Unauthorized Access"
+      redirect_to root_url
     end
   end
 

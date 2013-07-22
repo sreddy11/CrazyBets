@@ -25,12 +25,17 @@
                   <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                           <li><%= link_to '<i class="icon-star"></i> My Profile'.html_safe, current_user%> </li>
-                          <li><a href="<%= edit_user_path(current_user) %>">
+                          <li><a href="<%= session[:user_type] == "non-admin" ? edit_user_path(current_user) : 
+                            edit_admin_path(current_user)%>">
                             <i class="icon-edit"></i> Edit Profile</a></li>
                           <li><%= link_to '<i class="icon-remove"></i> Delete Profile'.html_safe, 
                             current_user, :method => :delete, :data =>{ :confirm => "Are you sure 
                               you want to do this?" }%>
                             </li>
+                            <% if session[:user_type] == "admin" %>
+                              <li><%= link_to '<i class="icon-envelope"></i> Invite New Admin'.html_safe, 
+                                new_invitation_path %></li>
+                            <% end %>
                             <li class="divider"></li>
                             <li><label style="text-align:center;margin-top:5px">
                               <%= link_to("Logout", logout_path,:method => :delete,:class => "btn btn-primary")%>

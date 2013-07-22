@@ -7,8 +7,12 @@ class AdminMailer < ActionMailer::Base
   #   en.admin_mailer.invitation.subject
   #
   def invitation(invitation, signup_url)
-    @greeting = "Hi"
-    mail :to => invitation.recipient_email, :subject =>   'Invitation', :from => 'admin@crazybets.com', 
-      :body =>  { :invitation => invitation, :signup_url => signup_url }
+    @signup_url = signup_url
+    mail :to => invitation.recipient_email, :subject =>   'Invitation', :from => 'admin@crazybets.com' 
   end
+  def reset_password(user)
+    @user = user
+    mail :to => @user.email, :subject => "CrazyBets Admin: Reset Password"
+  end
+
 end

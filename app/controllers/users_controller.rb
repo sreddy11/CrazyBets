@@ -1,9 +1,8 @@
 class UsersController < ApplicationController
 
   before_filter :find_user, :only => [:show, :edit, :update, :destroy]
-  before_filter :require_authentication, :only => [:edit, :update, :destroy]
-  before_filter :changing_current_user, :only => [:edit, :update, :destroy]
-  before_filter :require_no_authentication, :only => [:create]
+  before_filter :require_authentication, :only => [:show, :edit, :update, :destroy]
+  before_filter :require_no_authentication, :only => [:new, :create]
   
   def show
   end
@@ -14,10 +13,10 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    @user.admin = false
     if @user.save
       redirect_to @user, :notice => "Your Account (#{@user.user_name}) has been successfully created"
       session[:user_id] = @user.id
+      session[:user_type] = "non-admin"
     else
       render :new
     end
@@ -38,6 +37,7 @@ class UsersController < ApplicationController
   def destroy
     if @user.destroy
       session[:user_id] = nil
+      session[:user_type] = nil
       redirect_to root_url, :notice => "Your account has been deleted."
     else
       redirect_to current_user, :notice => "Sorry, the account could not be deleted"
@@ -54,12 +54,4 @@ class UsersController < ApplicationController
     params.require(:user).permit(:first_name, :last_name, :user_name, :email, :password, :password_confirmation, 
                                  :password_digest)
   end
-
-  def changing_current_user
-    if @user != current_user
-      redirect_to root_url, :notice => "Unauthorized access"
-    end
-  end
-
-
 end

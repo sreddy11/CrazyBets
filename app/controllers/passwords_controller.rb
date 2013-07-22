@@ -4,9 +4,9 @@ class PasswordsController < ApplicationController
   before_filter :check_expired, :only => [:edit,:update]
   
   def create
-    user = User.find_by_email(params[:email])
-    if user
-      user.send_password_reset    
+    @user = User.find_by_email(params[:email]) || Admin.find_by_email(params[:email])
+    if @user
+      @user.send_password_reset    
       redirect_to root_url, :notice => "E-mail has been sent regarding resetting password."
     else 
       flash[:notice] = "No account matches the e-mail provided."
@@ -33,7 +33,8 @@ class PasswordsController < ApplicationController
   private
 
   def find_user_by_password_reset_token
-    @user = User.find_by_reset_password_token!(params[:token])
+    @user = User.find_by_reset_password_token(params[:token]) || 
+      Admin.find_by_reset_password_token(params[:token])
   end
 
   def check_expired
@@ -43,8 +44,14 @@ class PasswordsController < ApplicationController
   end
 
   def password_params
-    params.require(:user).permit(:password, :password_confirmation)
+    begin
+      @parameters = params.require(:user)
+    rescue ActionController::ParameterMissing
+      @parameters = params.require(:admin)  
+    end
+      @parameters.permit(:password, :password_confirmation)
   end
+
 
 end
 

@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   validates :password, :length => {:minimum => 6},:if => lambda {|a| a.password.present?}
   validates :email, :presence => :true, :uniqueness => :true, 
     :email_format => { message: "not a valid format" }
- 
+
   has_secure_password
   
   def send_password_reset
@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
     save!
     UserMailer.reset_password(self).deliver
   end
+
   def set_new_token
     begin
       self[:reset_password_token] = SecureRandom.urlsafe_base64

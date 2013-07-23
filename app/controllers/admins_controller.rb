@@ -6,6 +6,7 @@ class AdminsController < ApplicationController
   before_filter :require_admin_authentication, :only => [:show, :edit, :update, :destroy]
   before_filter :require_no_authentication, :only => [:new, :create]
 
+
   def new
     @admin_user = Admin.new
     @admin_user.invitation = @invitation
@@ -113,6 +114,17 @@ class AdminsController < ApplicationController
       flash[:error] = "Unauthorized access"
       redirect_to root_url 
     end
+  end
+
+  def find_admin
+    @admin_user = Admin.find_by_user_name!(params[:id])
+  end
+
+  def require_admin_authentication
+    unless session[:user_id] == @admin_user.id && session[:user_type] == "admin"
+      flash[:error] = " Unauthorized Access"
+      redirect_to(root_url)
+    end 
   end
 
 end

@@ -62,4 +62,17 @@ class UsersController < ApplicationController
     params.require(:user).permit(:first_name, :last_name, :user_name, :email, :password, :password_confirmation, 
                                  :password_digest)
   end
+
+  def find_user
+    @user = User.find_by_user_name!(params[:id])
+  end
+
+  def require_user_authentication
+    unless session[:user_id] == @user.id && session[:user_type] == "non-admin"
+      flash[:error] = " Unauthorized Access"
+      redirect_to(root_url)
+    end 
+  end
+
+
 end

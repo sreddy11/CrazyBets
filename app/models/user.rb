@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
     :email_format => { message: "not a valid format" }
 
   has_secure_password
+
+  has_and_belongs_to_many(:bets)
   
   def send_password_reset
     set_new_token

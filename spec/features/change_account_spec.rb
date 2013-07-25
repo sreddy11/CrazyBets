@@ -52,6 +52,21 @@ describe "Using an account" do
         it "deletes the profile" do
           page.should have_content("Your account has been deleted")
         end
+
+        context "logging on should no longer work" do
+
+          before do
+            click_link "Login/Register"
+            fill_in 'sign_in_name', :with => 'sreddy1'
+            fill_in 'sign_in_password', :with => 'password'
+            click_button 'login-button'
+          end
+
+          it "will be invalid" do
+            current_path.should == '/login'
+            page.should have_content("Login Invalid")
+          end
+        end
       end
     end
     
@@ -64,16 +79,11 @@ describe "Using an account" do
         click_button 'login-button'
       end
 
-      it "logs in" do
+      it "does not logs in" do
         current_path.should == '/login'
         page.should have_content("Login Invalid")
       end
     end
-
-
-
-    
-
   end
 end
 

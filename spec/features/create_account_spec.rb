@@ -38,12 +38,12 @@ describe "Creating an account" do
 
     it "gives new errors" do
       current_path.should == '/users'
-      page.should have_content("First Name can't be blank")
-      page.should have_content("Last Name can't be blank")
+      page.should have_content("First name can't be blank")
+      page.should have_content("Last name can't be blank")
       page.should have_content("User name can't be blank")
       page.should have_content("Password is too short (minimum is 6 characters")
-      page.should have_content("Password doesn't match confirmation")
-      page.should have_content("Not a valid e-mail format")
+      page.should have_content("Password confirmation doesn't match Password")
+      page.should have_content("Email not a valid format")
     end
   end
 end

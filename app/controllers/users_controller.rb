@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_filter :find_user, :only => [:show, :edit, :update]
+  before_filter :find_user, :only => [:show, :edit, :update, :destroy]
   before_filter :require_authentication, :only => [:edit, :update, :destroy]
   before_filter :changing_current_user, :only => [:edit, :update, :destroy]
   before_filter :require_no_authentication, :only => [:create]
@@ -35,7 +35,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    if current_user.destroy
+    if @user.destroy
       session[:user_id] = nil
       redirect_to root_url, :notice => "Your account has been deleted."
     else

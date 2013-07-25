@@ -28,7 +28,8 @@
                           <li><a href="<%= edit_user_path(current_user) %>">
                             <i class="icon-edit"></i> Edit Profile</a></li>
                           <li><%= link_to '<i class="icon-remove"></i> Delete Profile'.html_safe, 
-                            current_user, :method => :delete, :confirm => "Are you sure you want to do this?"%>
+                            current_user, :method => :delete, :data =>{ :confirm => "Are you sure 
+                              you want to do this?" }%>
                             </li>
                             <li class="divider"></li>
                             <li><label style="text-align:center;margin-top:5px">
@@ -48,15 +49,15 @@
                         <h4> Login </h4>
                         <p>
                           <%= f.label "Username" %>
-                          <%= f.text_field :user_name %>
+                          <%= f.text_field(:user_name, :id => 'sign_in_name')  %>
                         </p>
                         <p>
                           <%= f.label :password %>
-                          <%= f.password_field :password %>
+                          <%= f.password_field :password, :id => 'sign_in_password' %>
                         </p>  
                         <p>
                         <label style="text-align:center;margin-top:5px">
-                          <%= f.submit("Login", :class => "btn btn-primary") %>
+                          <%= f.submit("Login", :id => "login-button", :class => "btn btn-primary") %>
                         </label>  
                         </p>
                         <p><label style="text-align:center;margin-top:5px">
@@ -82,7 +83,7 @@
     <% if flash[key] %>
       <div class="alert">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong><%= key.upcase %>:</strong><%= flash[key] %></div>
+        <strong><%= key.upcase %>:</strong> <%= flash[key] %></div>
       
     <% end %>
   <% end %>

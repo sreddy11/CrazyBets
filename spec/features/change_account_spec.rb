@@ -13,8 +13,8 @@ describe "Using an account" do
       click_link 'Logout'
     end
 
-    it "goes to the login page" do
-      page.should have_content("Logout Successful")
+    it "goes to the home page since the current page is unauthorized for a logged out user" do
+      current_path.should == '/'
     end
 
     context "Valid Login" do

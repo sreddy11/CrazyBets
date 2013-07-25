@@ -10,14 +10,15 @@ class ApplicationController < ActionController::Base
   end
     
   def logged_in?
-    session[:user_id] != nil || session[:admin_id]
+    session[:user_id] != nil 
   end
   helper_method(:logged_in?)
   
   def current_user
-    if User.exists?(session[:user_id])
+    case session[:user_type]
+    when "non-admin"
       @current_user ||= User.find(session[:user_id])
-    elsif Admin.exists?(session[:user_id])
+    when "admin"
       @current_user ||= Admin.find(session[:user_id])
     else 
       nil

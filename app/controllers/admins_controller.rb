@@ -1,11 +1,9 @@
-
 class AdminsController < ApplicationController
 
   before_filter :check_invite, :only => [:new]
   before_filter :find_admin, :only => [:show, :edit, :update, :destroy]
   before_filter :require_admin_authentication, :only => [:show, :edit, :update, :destroy]
   before_filter :require_no_authentication, :only => [:new, :create]
-
 
   def new
     @admin_user = Admin.new
@@ -18,11 +16,16 @@ class AdminsController < ApplicationController
 
   def edit
   end
-
-  
     
   def create
     @admin_user = Admin.new(admin_params)
+    if @admin_user.save
+      session[:user_id] = @admin_user.id
+      session[:user_type] = "admin"
+      redirect_to @admin_user, :notice => "Admin account successfully created"
+    else
+      render :new
+    end
   end
 
   def update
@@ -34,7 +37,6 @@ class AdminsController < ApplicationController
       render :edit
     end
   end
-
 
   def destroy
     if @admin_user.destroy
@@ -46,62 +48,20 @@ class AdminsController < ApplicationController
       render :new
     end
   end
-
-
+  
   private
 
   def admin_params
-    @admin_params = params.require(:admin).permit(:first_name, :last_name, :user_name, :email, :password, 
+    params.require(:admin).permit(:first_name, :last_name, :user_name, :email, :password, 
                                                  :password_confirmation, :invitation_id) 
-=======
-=======
-      session[:user_type] = "admin"
->>>>>>> Fixed admin invite
-    else
-      render :new
-    end
-  end
-
-  def update
-    @admin_user = Admin.find_by_user_name!(params[:id])
-    if @admin_user.update(admin_params)
-      redirect_to @admin_user, :notice => "Your Account (#{@admin_user.user_name}) has been successfully updated"
-      session[:user_id] = @admin_user.id
-    else
-      render :edit
-    end
-  end
-
-
-  def destroy
-    if current_user.destroy
-      session[:user_id] = nil
-      session[:user_type] = nil
-      redirect_to root_url, :notice => "Your account has been deleted."
-    else
-      redirect_to current_user, :notice => "Sorry, the account could not be deleted"
-    end
-  end
-
-
-  private
-
-  def admin_params
-    @admin_params = params.require(:admin).permit(:first_name, :last_name, :user_name, :email, :password, 
-                                                 :password_confirmation, :invitation_id) 
-<<<<<<< HEAD
-    @admin_params
->>>>>>> added invites to admins
-=======
->>>>>>> Fixed admin invite
   end
 
   def find_admin
     @admin_user = Admin.find_by_user_name!(params[:id])
   end
 
-  def require_admin_authenication
-    unless session[:user_id] = @admin_user.id && session[:user_type] = "admin" 
+  def require_admin_authentication
+    unless session[:user_id] == @admin_user.id && session[:user_type] = "admin" 
       flash[:error] = " Unauthorized access"
       redirect_to(root_url)
     end 
@@ -112,20 +72,12 @@ class AdminsController < ApplicationController
     @invitation = Invitation.find_by_invite_token(params[:invite_token])
     unless @invitation
       flash[:error] = "Unauthorized access"
-      redirect_to root_url 
+      if logged_in?
+        redirect_to current_user
+      else
+        redirect_to root_url
+      end
     end
   end
-
-  def find_admin
-    @admin_user = Admin.find_by_user_name!(params[:id])
-  end
-
-  def require_admin_authentication
-    unless session[:user_id] == @admin_user.id && session[:user_type] == "admin"
-      flash[:error] = " Unauthorized Access"
-      redirect_to(root_url)
-    end 
-  end
-
 end
 

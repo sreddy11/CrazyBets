@@ -70,7 +70,11 @@ class UsersController < ApplicationController
   def require_user_authentication
     unless session[:user_id] == @user.id && session[:user_type] == "non-admin"
       flash[:error] = " Unauthorized Access"
-      redirect_to(root_url)
+      if logged_in?
+        redirect_to current_user
+      else
+        redirect_to root_url
+      end
     end 
   end
 

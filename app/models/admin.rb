@@ -9,7 +9,6 @@ class Admin < ActiveRecord::Base
   validates :email, :presence => :true, :uniqueness => :true, 
     :email_format => { message: "not a valid format" }
   validates_presence_of :invitation_id
-  validates_uniqueness_of :invitation_id 
 
   has_many :invitations, :class_name => 'Invitation', :foreign_key => 'sender_id'
   belongs_to :invitation

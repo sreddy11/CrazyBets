@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="row">
+    <div class="offset4 span4 well">
+
+      <h4> Create Bet </h4>
+      <% if @bet %>
+        <ul>
+         <% @bet.errors.full_messages.each do |error| %>
+           <li><font color="red"><%= error %></font></li>
+         <% end %>
+        </ul>
+      <% end %>
+
+      <%= form_for [:admin, @bet] do |f| %>
+        
+        <p>
+        <%= f.fields_for :metric1 do |metric1_form| %>
+          <%= metric1_form.label(:topic, "Metric 1") %>
+          <%= metric1_form.text_area(:topic, :size => "1x1") %>
+        <% end %>
+        </p>
+        
+        <p>
+        <%= f.fields_for :metric2 do |metric2_form| %>
+          <%= metric2_form.label(:topic, "Metric 2") %>
+          <%= metric2_form.text_area(:topic, :size => "1x1") %>
+        <% end %>
+        </p>
+        
+        <p>
+        <%= f.label(:lock_time) %>
+        <%= f.datetime_select :lock_time, :ampm => true, :minute_step => 15 %>
+        </p>
+        
+        <p> <%= f.submit("Create Bet", :class => "btn btn-success") %> </p>
+      <% end %>
+    </div>
+  </div>
+</div>

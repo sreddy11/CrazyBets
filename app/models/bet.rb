@@ -9,4 +9,6 @@ class Bet < ActiveRecord::Base
 
   validates :metric1, :metric2, :presence => :true
 
+  scope :not_started, where("? < lock_time", Time.now)
+
 end

@@ -1,0 +1,2 @@
+module Users::BetsHelper
+end

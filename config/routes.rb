@@ -31,7 +31,8 @@ CrazyBets::Application.routes.draw do
       resource :invitation
     end
   end
-  resources :users
+  resources :users do
+  end
 
   get 'login' => "logins#new"
   post 'login' => "logins#create"
@@ -59,9 +60,9 @@ CrazyBets::Application.routes.draw do
   #   resources :photos, concerns: :toggleable
 
   # Example resource route within a namespace:
-  #   namespace :admin do
+      namespace :admin do
   #     # Directs /admin/products/* to Admin::ProductsController
   #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
+       resources :bets
+     end
 end

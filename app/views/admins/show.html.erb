@@ -1,7 +1,7 @@
 <div class="tabbable"> 
-  <ul class="nav nav-tabs nav-stacked">
+  <ul class="nav nav-tabs">
     <li class="active"><a href="#tab1" data-toggle="tab">Create Bet</a></li>
-    <li><a href="#tab2" data-toggle="tab">Change Bets That Have Not Started</a></li>
+    <li><a href="#tab2" data-toggle="tab">Delete Bets That Have Not Started</a></li>
     <li><a href="#tab3" data-toggle="tab">Resolve Open Bets</a></li>
   </ul>
   <div class="tab-content">
@@ -9,7 +9,8 @@
       <p> <%= render("admin/bets/new_bet") %> </p>
     </div>
     <div class="tab-pane" id="tab2">
-      <%= Bet.not_started.each do |bet| %>
+      <% Bet.not_started.each do |bet| %>
+        <%= render("admin/bets/display_bet", :bet => bet) %> 
       <% end %>
     </div>
     <div class="tab-pane" id="tab3">
@@ -18,15 +19,16 @@
 </div>
 
 
-<table class = "table table-bordered">
-  <tr class = "info">
-  <th colspan = "2">First Name:</th>
+<table class="table table-bordered" width="100%">
+  <tr class="info">
+  <th colspan ="2">First Name:</th>
   </tr>
   <tr class ="info" >
-    <th rowspan="2" colspan = "1">Telephone:</th>
-    <td class = "warning">555 77 854 </td>
+    <th rowspan="2" colspan="1" width="20%">Locks at: December 31, 2013 5:00 PM</th>
+    <td class="warning" width="80%">555 77 854 </td>
   </tr>
-  <tr class = "warning">
-    <td>555 77 855</td>
+  <tr class="warning" >
+    <td width="80%">555 77 855</td>
   </tr>
 </table>
+

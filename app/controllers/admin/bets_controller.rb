@@ -1,6 +1,7 @@
 class Admin::BetsController < ApplicationController
   
   before_filter :must_be_admin
+  before_filter :bet_not_started, :only => [:edit, :update, :destroy]
 
   def new
     @bet = Bet.new
@@ -10,6 +11,30 @@ class Admin::BetsController < ApplicationController
 
   def show
   end
+
+  def edit
+    @bet = Bet.find(params[:id])
+  end
+
+  def update
+    @bet = Bet.find(params[:id])
+    if @bet.update(bet_params)
+      redirect_to current_user, :notice => "Bet resolved"
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    @bet = Bet.find(params[:id])
+    if @bet.destroy
+      flash[:notice] = "Bet deleted"
+    else
+      flash[:notice] = "Ooops something went wrong! Bet was not deleted"
+    end
+    redirect_to current_user
+  end
+
 
   def create
     @bet = Bet.new(bet_params)
